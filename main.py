@@ -50,6 +50,11 @@ class BannerStore:
         for category in banner.categories:
             self.store[category].remove(banner)
 
+    def remove_empty_categories(self, categories):
+        for category in categories:
+            if self.is_category_empty(category):
+                del self.store[category]
+
     def is_category_empty(self, category):
         return len(self.store[category]) == 0
 
@@ -57,15 +62,14 @@ class BannerStore:
         banner = random.choice(self.store[category])
         if banner.show() < 1:
             self.remove_banner(banner)
+            self.remove_empty_categories(banner.categories)
         return banner
 
     def get_banner(self, categories=[], unique=True):
+        categories = [c for c in categories if c in self.store]
+
         if not categories:
             categories = list(self.store.keys())
-
-        for category in categories[:]:
-            if self.is_category_empty(category):
-                categories.remove(category)
 
         if not categories:
             return
