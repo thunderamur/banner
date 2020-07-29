@@ -103,7 +103,7 @@ class BannerServer(BaseHTTPRequestHandler):
 
 def run_server():
     banner_server = HTTPServer((host_name, host_port), BannerServer)
-    print(time.asctime(), "Server Starts - %s:%s" % (host_name, host_port))
+    print(time.asctime(), f'Server Starts - {host_name}:{host_port}')
 
     try:
         banner_server.serve_forever()
@@ -111,7 +111,7 @@ def run_server():
         pass
 
     banner_server.server_close()
-    print(time.asctime(), "Server Stops - %s:%s" % (host_name, host_port))
+    print(time.asctime(), f'Server Stops - {host_name}:{host_port}')
 
 
 if __name__ == '__main__':
