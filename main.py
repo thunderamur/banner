@@ -53,7 +53,7 @@ class BannerStore:
     def is_category_empty(self, category):
         return len(self.store[category]) == 0
 
-    def get_banner_by_category(self, category, unique=True):
+    def get_banner_by_category(self, category):
         banner = random.choice(self.store[category])
         if banner.show() < 1:
             self.remove_banner(banner)
@@ -73,7 +73,7 @@ class BannerStore:
         category = random.choice(categories)
         banner = self.get_banner_by_category(category)
 
-        if banner is self.last_banner:
+        if unique and banner is self.last_banner:
             self.get_banner_by_category(category)
 
         return banner
