@@ -22,26 +22,26 @@ class Banner:
 
 
 class BannerStore:
-    def __init__(self):
+    def __init__(self, config_file):
         self.store = {}
-        self.read_config()
+        self.read_config(config_file)
         self.last_banner = None
 
     def __len__(self):
         return len(self.store)
 
-    def read_config(self):
-        with open('config.csv') as config:
+    def read_config(self, config_file):
+        with open(config_file) as config:
             for line in config:
                 data = line.strip().split(';')
                 url = data[0]
                 shows = data[1]
                 categories = data[2:]
-                self.put_banner(url, shows, categories)
+                banner = Banner(url, shows, categories)
+                self.put_banner(banner)
 
-    def put_banner(self, url, shows, categories):
-        banner = Banner(url, shows, categories)
-        for category in categories:
+    def put_banner(self, banner):
+        for category in banner.categories:
             if category not in self.store:
                 self.store[category] = []
             self.store[category].append(banner)
@@ -115,5 +115,5 @@ def run_server():
 
 
 if __name__ == '__main__':
-    bs = BannerStore()
+    bs = BannerStore('config.csv')
     run_server()
